@@ -8,6 +8,7 @@ defmodule Tunez.Music.Artist do
   json_api do
     type "artist"
     includes [:albums]
+    derive_filter? false
   end
 
   postgres do
