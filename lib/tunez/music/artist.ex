@@ -25,6 +25,10 @@ defmodule Tunez.Music.Artist do
     end
   end
 
+  preparations do
+    prepare build(sort: [name: :asc])
+  end
+
   attributes do
     uuid_v7_primary_key :id
 

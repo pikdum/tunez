@@ -18,6 +18,10 @@ defmodule Tunez.Music.Album do
     end
   end
 
+  preparations do
+    prepare build(sort: [year_released: :desc])
+  end
+
   attributes do
     uuid_v7_primary_key :id
 
