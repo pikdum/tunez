@@ -27,6 +27,8 @@ defmodule Tunez.Music.Artist do
         default ""
       end
 
+      prepare build(load: [:album_count, :latest_album_year_released, :cover_image_url])
+
       filter expr(contains(name, ^arg(:query)))
       pagination offset?: true, default_limit: 12
     end
@@ -65,8 +67,14 @@ defmodule Tunez.Music.Artist do
   end
 
   aggregates do
-    count :album_count, :albums
-    first :latest_album_year_released, :albums, :year_released
+    count :album_count, :albums do
+      public? true
+    end
+
+    first :latest_album_year_released, :albums, :year_released do
+      public? true
+    end
+
     first :cover_image_url, :albums, :cover_image_url
   end
 end
