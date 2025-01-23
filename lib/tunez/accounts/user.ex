@@ -3,7 +3,7 @@ defmodule Tunez.Accounts.User do
     otp_app: :tunez,
     domain: Tunez.Accounts,
     authorizers: [Ash.Policy.Authorizer],
-    extensions: [AshAuthentication],
+    extensions: [AshJsonApi.Resource, AshAuthentication],
     data_layer: AshPostgres.DataLayer
 
   authentication do
@@ -43,6 +43,10 @@ defmodule Tunez.Accounts.User do
         sender Tunez.Accounts.User.Senders.SendNewUserConfirmationEmail
       end
     end
+  end
+
+  json_api do
+    type "user"
   end
 
   postgres do
