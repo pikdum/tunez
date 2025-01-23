@@ -30,10 +30,12 @@ defmodule Tunez.Accounts.User.Senders.SendMagicLinkEmail do
   end
 
   defp body(params) do
+    link = url(~p"/auth/user/magic_link/?token=#{params[:token]}")
+
     """
     Hello, #{params[:email]}! Click this link to sign in:
 
-    #{url(~p"/auth/user/magic_link/?token=#{params[:token]}")}
+    <a href="#{link}">#{link}</a>
     """
   end
 end

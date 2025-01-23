@@ -22,10 +22,12 @@ defmodule Tunez.Accounts.User.Senders.SendNewUserConfirmationEmail do
   end
 
   defp body(params) do
+    link = url(~p"/auth/user/confirm_new_user?#{[confirm: params[:token]]}")
+
     """
     Click this link to confirm your email:
 
-    #{url(~p"/auth/user/confirm_new_user?#{[confirm: params[:token]]}")}
+    <a href="#{link}">#{link}</a>
     """
   end
 end

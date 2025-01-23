@@ -22,10 +22,12 @@ defmodule Tunez.Accounts.User.Senders.SendPasswordResetEmail do
   end
 
   defp body(params) do
+    link = url(~p"/password-reset/#{params[:token]}")
+
     """
     Click this link to reset your password:
 
-    #{url(~p"/password-reset/#{params[:token]}")}
+    <a href="#{link}">#{link}</a>
     """
   end
 end
