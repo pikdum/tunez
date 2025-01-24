@@ -280,6 +280,11 @@ defmodule Tunez.Accounts.User do
       allow_nil? true
       sensitive? true
     end
+
+    attribute :role, Tunez.Accounts.Role do
+      allow_nil? false
+      default :user
+    end
   end
 
   identities do
