@@ -270,6 +270,11 @@ defmodule Tunez.Accounts.User do
     policy action([:register_with_password, :sign_in_with_password]) do
       authorize_if always()
     end
+
+    # not sure if this is really necessary
+    policy action(:read) do
+      authorize_if expr(id == ^actor(:id))
+    end
   end
 
   attributes do
