@@ -75,6 +75,7 @@ defmodule Tunez.Music.Album do
                :cover_image_url,
                ~r/(^https:\/\/|\/images\/).+(\.png|\.jpg)$/
              ),
+             where: [changing(:cover_image_url)],
              message: "must start with https:// or /images/"
   end
 
