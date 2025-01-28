@@ -16,18 +16,18 @@ defmodule Tunez.Generator do
   - `:track_count` - The number of tracks to generate for the album.
   """
   def album(opts \\ []) do
-    raise "Uncomment the `album` generator content in `test/support/generator.ex` (and remove this line)"
-    # actor =
-    #   opts[:actor] ||
-    #     once(:default_actor, fn ->
-    #       generate(user(role: opts[:actor_role] || :editor))
-    #     end)
+    # raise "Uncomment the `album` generator content in `test/support/generator.ex` (and remove this line)"
+    actor =
+      opts[:actor] ||
+        once(:default_actor, fn ->
+          generate(user(role: opts[:actor_role] || :editor))
+        end)
 
-    # artist_id =
-    #   opts[:artist_id] ||
-    #     once(:default_artist_id, fn ->
-    #       generate(artist()).id
-    #     end)
+    artist_id =
+      opts[:artist_id] ||
+        once(:default_artist_id, fn ->
+          generate(artist()).id
+        end)
 
     # after_action =
     #   if opts[:track_count] do
@@ -37,32 +37,34 @@ defmodule Tunez.Generator do
     #     end
     #   end
 
-    # if opts[:seed?] do
-    #   seed_generator(
-    #     %Tunez.Music.Album{
-    #       name: sequence(:album_name, &"Album #{&1}"),
-    #       year_released: StreamData.integer(1951..2024),
-    #       artist_id: artist_id
-    #     },
-    #     actor: actor,
-    #     overrides: opts,
-    #     after_action: after_action
-    #   )
-    # else
-    #   changeset_generator(
-    #     Tunez.Music.Album,
-    #     :create,
-    #     defaults: [
-    #       name: sequence(:album_name, &"Album #{&1}"),
-    #       year_released: StreamData.integer(1951..2024),
-    #       artist_id: artist_id,
-    #       cover_image_url: nil
-    #     ],
-    #     overrides: opts,
-    #     actor: actor,
-    #     after_action: after_action
-    #   )
-    # end
+    after_action = fn -> nil end
+
+    if opts[:seed?] do
+      seed_generator(
+        %Tunez.Music.Album{
+          name: sequence(:album_name, &"Album #{&1}"),
+          year_released: StreamData.integer(1951..2024),
+          artist_id: artist_id
+        },
+        actor: actor,
+        overrides: opts,
+        after_action: after_action
+      )
+    else
+      changeset_generator(
+        Tunez.Music.Album,
+        :create,
+        defaults: [
+          name: sequence(:album_name, &"Album #{&1}"),
+          year_released: StreamData.integer(1951..2024),
+          artist_id: artist_id,
+          cover_image_url: nil
+        ],
+        overrides: opts,
+        actor: actor,
+        after_action: after_action
+      )
+    end
   end
 
   @doc """
@@ -75,38 +77,38 @@ defmodule Tunez.Generator do
   - `:album_count` - The number of albums to generate for the artist
   """
   def artist(opts \\ []) do
-    raise "Uncomment the `artist` generator content in `test/support/generator.ex` (and remove this line)"
-    # actor =
-    #   opts[:actor] ||
-    #     once(:default_actor, fn ->
-    #       generate(user(role: :admin))
-    #     end)
+    # raise "Uncomment the `artist` generator content in `test/support/generator.ex` (and remove this line)"
+    actor =
+      opts[:actor] ||
+        once(:default_actor, fn ->
+          generate(user(role: :admin))
+        end)
 
-    # after_action =
-    #   if opts[:album_count] do
-    #     fn artist ->
-    #       generate_many(album(artist_id: artist.id), opts[:album_count])
-    #       Ash.load!(artist, :albums)
-    #     end
-    #   end
+    after_action =
+      if opts[:album_count] do
+        fn artist ->
+          generate_many(album(artist_id: artist.id), opts[:album_count])
+          Ash.load!(artist, :albums)
+        end
+      end
 
-    # if opts[:seed?] do
-    #   seed_generator(
-    #     %Tunez.Music.Artist{name: sequence(:artist_name, &"Artist #{&1}")},
-    #     actor: actor,
-    #     overrides: opts,
-    #     after_action: after_action
-    #   )
-    # else
-    #   changeset_generator(
-    #     Tunez.Music.Artist,
-    #     :create,
-    #     defaults: [name: sequence(:artist_name, &"Artist #{&1}")],
-    #     actor: actor,
-    #     overrides: opts,
-    #     after_action: after_action
-    #   )
-    # end
+    if opts[:seed?] do
+      seed_generator(
+        %Tunez.Music.Artist{name: sequence(:artist_name, &"Artist #{&1}")},
+        actor: actor,
+        overrides: opts,
+        after_action: after_action
+      )
+    else
+      changeset_generator(
+        Tunez.Music.Artist,
+        :create,
+        defaults: [name: sequence(:artist_name, &"Artist #{&1}")],
+        actor: actor,
+        overrides: opts,
+        after_action: after_action
+      )
+    end
   end
 
   @doc """
@@ -117,7 +119,7 @@ defmodule Tunez.Generator do
   - `:user_id` - Specify the user ID for the notification
   - `:album_id` - Specify the album ID for the notification
   """
-  def notification(opts \\ []) do
+  def notification(_opts \\ []) do
     raise "Uncomment the `notification` generator content in `test/support/generator.ex` (and remove this line)"
     # user_id = opts[:user_id] || once(:default_user_id, fn -> generate(user()).id end)
     # album_id = opts[:album_id] || once(:default_album_id, fn -> generate(album()).id end)
@@ -138,7 +140,7 @@ defmodule Tunez.Generator do
   - `:album_id` - Specify the album ID for the track
 
   """
-  def track(opts \\ []) do
+  def track(_opts \\ []) do
     raise "Uncomment the `track` generator content in `test/support/generator.ex` (and remove this line)"
     # actor = opts[:actor] || once(:default_actor, fn -> generate(user(role: :admin)) end)
     # album_id = opts[:album_id] || once(:default_album_id, fn -> generate(album()).id end)
@@ -167,22 +169,22 @@ defmodule Tunez.Generator do
   - `:role` - Specify a role to give the created user. Defaults to `:user`.
   """
   def user(opts \\ []) do
-    raise "Uncomment the `user` generator content in `test/support/generator.ex` (and remove this line)"
-    # changeset_generator(
-    #   Tunez.Accounts.User,
-    #   :register_with_password,
-    #   defaults: [
-    #     # Generates unique values using an auto-incrementing sequence
-    #     # eg. `user1@example.com`, `user2@example.com`, etc.
-    #     email: sequence(:user_email, &"user#{&1}@example.com"),
-    #     password: "password",
-    #     password_confirmation: "password"
-    #   ],
-    #   overrides: opts,
-    #   after_action: fn user ->
-    #     role = opts[:role] || :user
-    #     Tunez.Accounts.set_user_role!(user, role, authorize?: false)
-    #   end
-    # )
+    # raise "Uncomment the `user` generator content in `test/support/generator.ex` (and remove this line)"
+    changeset_generator(
+      Tunez.Accounts.User,
+      :register_with_password,
+      defaults: [
+        # Generates unique values using an auto-incrementing sequence
+        # eg. `user1@example.com`, `user2@example.com`, etc.
+        email: sequence(:user_email, &"user#{&1}@example.com"),
+        password: "password",
+        password_confirmation: "password"
+      ],
+      overrides: opts,
+      after_action: fn user ->
+        role = opts[:role] || :user
+        Tunez.Accounts.set_user_role!(user, role, authorize?: false)
+      end
+    )
   end
 end
