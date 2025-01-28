@@ -69,7 +69,8 @@ defmodule Tunez.MixProject do
       {:gettext, "~> 0.26 and >= 0.26.1"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:phoenix_test, "~> 0.5.1", only: :test, runtime: false}
     ]
   end
 
@@ -86,7 +87,7 @@ defmodule Tunez.MixProject do
       seed: [
         "run priv/repo/seeds/01-artists.exs",
         "run priv/repo/seeds/02-albums.exs",
-        "run priv/repo/seeds/09-tracks.exs"
+        "run priv/repo/seeds/08-tracks.exs"
       ],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ash.setup --quiet", "test"],
